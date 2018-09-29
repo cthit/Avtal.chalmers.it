@@ -1,0 +1,27 @@
+version: "2"
+services:
+  frontend:
+    container_name: frontend
+    image: avtal_frontend:prod
+    build:
+      context: .
+      dockerfile: prod.frontend.Dockerfile
+    ports:
+      - "8080:8080"
+  backend:
+    container_name: backend
+    image: go-accounts_backend:prod
+    build:
+      context: .
+      dockerfile: prod.backend.Dockerfile
+    links:
+      - "database"
+    ports:
+      - "3000:3000"
+  database:
+    container_name: database
+    image: mongo
+    volumes:
+      - ./database/data:/data/db
+    ports:
+      - "27017:27017"
